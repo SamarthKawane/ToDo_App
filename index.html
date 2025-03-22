@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ToDo App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .task-input {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid #4CAF50;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #e8f5e9;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            border: none;
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ToDo App</h1>
+        <div class="task-input">
+            <input type="text" id="taskInput" placeholder="Add a new task...">
+            <button onclick="addTask()">Add</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadTasks);
+
+        function addTask() {
+            const taskInput = document.getElementById("taskInput");
+            const taskValue = taskInput.value.trim();
+            if (!taskValue) return;
+
+            const taskList = document.getElementById("taskList");
+            const li = document.createElement("li");
+            li.innerHTML = ${taskValue} <button class="delete-btn" onclick="deleteTask(this)">Delete</button>;
+            taskList.appendChild(li);
+
+            saveTasks();
+            taskInput.value = ""; // Clear input after adding
+        }
+
+        function deleteTask(element) {
+            element.parentElement.remove();
+            saveTasks();
+        }
+
+        function saveTasks() {
+            const taskList = document.getElementById("taskList").innerHTML;
+            localStorage.setItem("tasks", taskList);
+        }
+
+        function loadTasks() {
+            const savedTasks = localStorage.getItem("tasks");
+            if (savedTasks) {
+                document.getElementById("taskList").innerHTML = savedTasks;
+            }
+        }
+    </script>
+</body>
+</html>
