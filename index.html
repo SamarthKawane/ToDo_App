@@ -82,7 +82,7 @@
 
             const taskList = document.getElementById("taskList");
             const li = document.createElement("li");
-            li.innerHTML = ${taskValue} <button class="delete-btn" onclick="deleteTask(this)">Delete</button>;
+            li.innerHTML = `${taskValue} <button class="delete-btn" onclick="deleteTask(this)">Delete</button>`;
             taskList.appendChild(li);
 
             saveTasks();
@@ -95,14 +95,22 @@
         }
 
         function saveTasks() {
-            const taskList = document.getElementById("taskList").innerHTML;
-            localStorage.setItem("tasks", taskList);
+            const tasks = [];
+            document.querySelectorAll("#taskList li").forEach(li => {
+                tasks.push(li.innerHTML);
+            });
+            localStorage.setItem("tasks", JSON.stringify(tasks));
         }
 
         function loadTasks() {
-            const savedTasks = localStorage.getItem("tasks");
+            const savedTasks = JSON.parse(localStorage.getItem("tasks"));
             if (savedTasks) {
-                document.getElementById("taskList").innerHTML = savedTasks;
+                const taskList = document.getElementById("taskList");
+                savedTasks.forEach(taskHTML => {
+                    const li = document.createElement("li");
+                    li.innerHTML = taskHTML;
+                    taskList.appendChild(li);
+                });
             }
         }
     </script>
